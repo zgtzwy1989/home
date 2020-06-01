@@ -1,3 +1,4 @@
+import os
 from urllib import request,parse
 import bs4 
 import chardet
