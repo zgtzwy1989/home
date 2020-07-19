@@ -25,7 +25,7 @@ for i in list1:
 	else:
 		response.encoding="utf-8"
 		print(response.text)
-	finally:git
+	finally:
 		pass
 	
 
