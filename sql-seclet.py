@@ -25,27 +25,32 @@ def ibsert_information():#电话预约录入按钮接口
 	A=insert_id.get()
 	B=insert_name.get()
 	C=insert_pos_information.get()
+	D=insert_phone.get()
 
 
 	
 	if C=="pos退回":
-		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",1);'
+		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",1,{int(D)});'
 		my_sql=mysql_jk_insert(sql)
 		insert_id_input.delete(0,"end")
 		insert_name_input.delete(0,"end")
-		insert_is_pos_Information.current(0)	
+		insert_is_pos_Information.current(0)
+		insert_phone_input.delete(0,"end")	
 	if C=="pos丢失":
-		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",2);'
+		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",2,{int(D)});'
 		my_sql=mysql_jk_insert(sql)
 		insert_id_input.delete(0,"end")
 		insert_name_input.delete(0,"end")
-		insert_is_pos_Information.current(0)	
+		insert_is_pos_Information.current(0)
+		insert_phone_input.delete(0,"end")	
 		
 	if C=="pos正常":
-		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",0);'
+		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",0,{int(D)});'
 		my_sql=mysql_jk_insert(sql)
 		insert_id_input.delete(0,"end")
 		insert_name_input.delete(0,"end")
+		insert_is_pos_Information.current(0)
+		insert_phone_input.delete(0,"end")	
 		
 def reply():##弹窗窗口
 	
@@ -107,7 +112,12 @@ insert_pos_information=StringVar()
 insert_is_pos_Information_label=tk.ttk.Label(sql,text="特殊情况说明:").place(x=0,y=240)
 insert_is_pos_Information=tk.ttk.Combobox(sql,values=["pos正常","pos退回","pos丢失"],textvariable=insert_pos_information)
 insert_is_pos_Information.place(x=80,y=240)
-insert_is_pos_Information.current(0)	
+insert_is_pos_Information.current(0)
+insert_mac_lable=tk.Label(sql,text="电话:")
+insert_mac_lable.place(x=5,y=270)
+insert_phone=StringVar()
+insert_phone_input=tk.Entry(sql,textvariable=insert_phone)
+insert_phone_input.place(x=45,y=270)
 
 
 sql.mainloop()
