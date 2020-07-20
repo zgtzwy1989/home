@@ -7,4 +7,3 @@ response = requests.get(host)
 if response:
    v=response.json()
    print(v['access_token'])
-   24.fc465c8f9f99c8ac6a2ff80c3c8361ab.2592000.1585154824.282335-18570318
