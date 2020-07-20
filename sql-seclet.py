@@ -1,16 +1,12 @@
-import tkinter as tk
-import tkinter.messagebox
-from PIL import Image
-from PIL import ImageTk
-from tkinter import StringVar
-import pymysql,tkinter.ttk#复选菜单模块,threading
-'''
-全局变量
-insert_id_input_zhu     主界面 
-insert_name_input_zhu
-'''
 
 
+
+def mysql_jk_select(sql):#MySQL查询接口
+	conn = pymysql.connect(host='localhost', port=3306, user='root', passwd='cq123456', db='业务', charset='utf8')
+	cour=conn.cursor()
+	effect_cour=cour.execute(sql)
+	p=cour.fetchall()
+	return p
 def mysql_jk_insert(sql):#插入数据接口
 	conn=pymysql.connect(user="root",host="localhost",passwd="cq123456",db="业务",port=3306,charset="utf8")
 	cur=conn.cursor()
@@ -20,39 +16,109 @@ def mysql_jk_insert(sql):#插入数据接口
 	return "ok"
 
 
+def ibsert_print():#打印接口弹窗
+	def ibsert_print_qqq():#打印接口
+		wb2=openpyxl.load_workbook(r"江苏农行工单竖版正式_修改版.xlsx")
+		sheets = wb2.sheetnames
+		name=sheets[0]
+		wb=wb2.get_sheet_by_name(f"{name}")
+		s=ibsert_print_return.get()
+		print(s)
+		sql1=f"SELECT * FROM 电话联系表 where Merchant_id = '{s}'"
+		num=mysql_jk_select(sql1)
+		wb["M4"]="商户编号:"+srt(num[0][0]) 
+		wb["M5"]="商户名称:"+num[0][1]                  
+		wb["M6"]="商户联系电话:"+srt(num[0][3]) 
+		wb2.save(f"C:\\Users\\jade\\Desktop\\'{num[0][0]}'.xlsx")
+		wb2.close()
+		
+		root=tk.Toplevel()
+		root.title("完成")
+		root.geometry("30x30")
+		root.mainloop()
+		
+	#正文
+	sql=tk.Toplevel()
+	sql.title("选择打印模块")
+	sql.geometry("500x700")
+	t=insert_time.get()
+	sql1=f"SELECT * FROM 电话联系表 WHERE data = '{t}';"
+	insert_time_input.delete(0,"end")
+	num=mysql_jk_select(sql1)
+	y=0	
+	ibsert_print_return=tk.IntVar()
+	for i in num:
+		print(i)
+		y+=20
+		sql_min=tk.Label(master=sql,text=f"单位id:{i[0]},单位名称:{i[1]},电话:{i[3]},时间:{i[4]}").place(x=30,y=y)
+
+		sql_r=tk.Radiobutton(sql,value=i[0],variable=ibsert_print_return)
+		sql_r.place(x=0,y=y)
+	ibsert_print_butt=tk.Button(sql,text="打印单据",command=ibsert_print_qqq).place(x=40,y=0)
+	
+	sql.mainloop()
+
 	
 def ibsert_information():#电话预约录入按钮接口
 	A=insert_id.get()
 	B=insert_name.get()
 	C=insert_pos_information.get()
 	D=insert_phone.get()
+<<<<<<< HEAD
+=======
+	e=insert_time.get()
+>>>>>>> second_branch
 
 
 	
 	if C=="pos退回":
+<<<<<<< HEAD
 		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",1,{int(D)});'
+=======
+		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",1,{int(D)},"{e}");'
+>>>>>>> second_branch
 		my_sql=mysql_jk_insert(sql)
 		insert_id_input.delete(0,"end")
 		insert_name_input.delete(0,"end")
 		insert_is_pos_Information.current(0)
+<<<<<<< HEAD
 		insert_phone_input.delete(0,"end")	
 	if C=="pos丢失":
 		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",2,{int(D)});'
+=======
+		insert_phone_input.delete(0,"end")
+		insert_time_input.delete(0,"end")	
+	if C=="pos丢失":
+		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",2,{int(D)},"{e}");'
+>>>>>>> second_branch
 		my_sql=mysql_jk_insert(sql)
 		insert_id_input.delete(0,"end")
 		insert_name_input.delete(0,"end")
 		insert_is_pos_Information.current(0)
+<<<<<<< HEAD
 		insert_phone_input.delete(0,"end")	
 		
 	if C=="pos正常":
 		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",0,{int(D)});'
+=======
+		insert_phone_input.delete(0,"end")
+		insert_time_input.delete(0,"end")	
+		
+	if C=="pos正常":
+		sql=f'INSERT into `电话联系表`values({int(A)},"{B}",0,{int(D)},"{e}");'
+>>>>>>> second_branch
 		my_sql=mysql_jk_insert(sql)
 		insert_id_input.delete(0,"end")
 		insert_name_input.delete(0,"end")
 		insert_is_pos_Information.current(0)
+<<<<<<< HEAD
 		insert_phone_input.delete(0,"end")	
+=======
+		insert_phone_input.delete(0,"end")
+		insert_time_input.delete(0,"end")	
+>>>>>>> second_branch
 		
-def reply():##弹窗窗口
+def reply():##查询（id)弹窗窗口模块
 	
 	s=e.get()
 	print(type(s))
@@ -95,11 +161,11 @@ id_input=tk.Entry(sql,textvariable=e).place(x=60,y=30)
 name_label=tk.Label(sql,text="商户名称:").place(x=0,y=60)
 name_input=tk.Entry().place(x=60,y=60)
 seclet_button=tk.Button(sql,text="查询",command=reply).place(x=300,y=30)
-#电话预约录入：
+#电话预约录入/及查询打印功能：
 insert_name_label_BT=tk.Label(sql,text="预约录入功能").place(x=0,y=150)#标题
 insert_burron=tk.Button(sql,text="电话联系预约",width=13,command=ibsert_information).place(x=270,y=180)
+insert_print=tk.Button(sql,text="打印接口",width=13,command=ibsert_print).place(x=270,y=230)
 insert_id_label=tk.Label(sql,text="id:").place(x=20,y=180)
-
 insert_id=StringVar()
 insert_id_input=tk.Entry(sql,textvariable=insert_id)
 insert_id_input.place(x=50,y=180)#修饰后可能会转义
@@ -113,11 +179,25 @@ insert_is_pos_Information_label=tk.ttk.Label(sql,text="特殊情况说明:").pla
 insert_is_pos_Information=tk.ttk.Combobox(sql,values=["pos正常","pos退回","pos丢失"],textvariable=insert_pos_information)
 insert_is_pos_Information.place(x=80,y=240)
 insert_is_pos_Information.current(0)
+<<<<<<< HEAD
 insert_mac_lable=tk.Label(sql,text="电话:")
 insert_mac_lable.place(x=5,y=270)
 insert_phone=StringVar()
 insert_phone_input=tk.Entry(sql,textvariable=insert_phone)
 insert_phone_input.place(x=45,y=270)
+=======
+insert_phone_lable=tk.Label(sql,text="电话:")
+insert_phone_lable.place(x=5,y=270)
+insert_phone=StringVar()
+insert_phone_input=tk.Entry(sql,textvariable=insert_phone)
+insert_phone_input.place(x=45,y=270)
+insert_time_lable=tk.Label(sql,text="时间:")
+insert_time_lable.place(x=210,y=270)
+insert_time=StringVar()
+insert_time_input=tk.Entry(sql,textvariable=insert_time)
+insert_time_input.place(x=240,y=270)
+
+>>>>>>> second_branch
 
 
 sql.mainloop()
