@@ -30,23 +30,27 @@ def mysql_jk_insert(sql):#插入数据接口
 
 def ibsert_print():#打印接口弹窗
 	def ibsert_print_qqq():#打印接口
-		wb2=openpyxl.load_workbook(r"江苏农行工单竖版正式_修改版.xlsx")
-		sheets = wb2.sheetnames
-		name=sheets[0]
-		wb=wb2.get_sheet_by_name(f"{name}")
-		s=ibsert_print_return.get()
+		global num
+		s=lb.curselection()
 		print(s)
-		sql1=f"SELECT * FROM 电话联系表 where Merchant_id = '{s}'"
-		num=mysql_jk_select(sql1)
-		wb["M4"]=f"商户编号:{num[0][0]}"
-		wb["M5"]="商户名称:"+num[0][1]                  
-		wb["M6"]=f"商户联系电话:{num[0][3]}"
-		wb2.save(f"C:\\Users\\jade\\Desktop\\'{num[0][1]}'巡检单.xlsx")
-		wb2.close()
-		root=tk.Toplevel()
-		root.title("完成")
-		root.geometry("30x30")
-		root.mainloop()
+
+		for one_database in s:
+			
+			t=num[one_database]
+			wb2=openpyxl.load_workbook(r"江苏农行工单竖版正式_修改版.xlsx")
+			sheets = wb2.sheetnames
+			name=sheets[0]
+			wb=wb2.get_sheet_by_name(f"{name}")
+			
+			#sql1=f"SELECT * FROM 电话联系表 where Merchant_id = '{t}'"
+			#num=mysql_jk_select(sql1)
+			wb["M4"]=f"商户编号:{t[0]}"
+			wb["M5"]="商户名称:"+t[1]                  
+			wb["M6"]=f"商户联系电话:{t[3]}"
+			wb2.save(f"C:\\Users\\jade\\Desktop\\'{t[1]}_{t[0]}'巡检单.xlsx")
+			wb2.close()
+			
+			
 		
 	#正文
 	sql=tk.Toplevel()
@@ -55,16 +59,20 @@ def ibsert_print():#打印接口弹窗
 	t=insert_time.get()
 	sql1=f"SELECT * FROM 电话联系表 WHERE data = '{t}';"
 	insert_time_input.delete(0,"end")
+	global num
 	num=mysql_jk_select(sql1)
-	y=0	
-	ibsert_print_return=tk.IntVar()
+	lable_rcoll=tk.Scrollbar(sql)
+	lable_rcoll.place(x=450,height=650)
+	lb=tk.Listbox(sql,yscrollcommand=lable_rcoll.set,selectmode='multiple')
+	lb.place(x=20,y=30,height=270,width=260)
+	#ibsert_print_return=tk.IntVar()
 	for i in num:
-		print(i)
-		y+=20
-		sql_min=tk.Label(master=sql,text=f"单位id:{i[0]},单位名称:{i[1]},电话:{i[3]},时间:{i[4]}").place(x=30,y=y)
-
-		sql_r=tk.Radiobutton(sql,value=i[0],variable=ibsert_print_return)
-		sql_r.place(x=0,y=y)
+		
+		lb.insert(500,i)
+		#sql_min=tk.Label(master=sql,text=f"单位id:{i[0]},单位名称:{i[1]},电话:{i[3]},时间:{i[4]}").place(x=30,y=y)
+		#sql_r=tk.Radiobutton(sql,value=i[0],variable=ibsert_print_return)
+		#sql_r.place(x=0,y=y)
+	lable_rcoll.config(command=lb.yview)
 	ibsert_print_butt=tk.Button(sql,text="打印单据",command=ibsert_print_qqq).place(x=40,y=0)
 	
 	sql.mainloop()
