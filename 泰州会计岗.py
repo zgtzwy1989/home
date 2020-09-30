@@ -20,9 +20,6 @@ for i in range(1,6):
 					
 	
 	for job_url in li:
-		
-
-		
 		new_job=s=re.sub(r"\\","",job_url)
 		spones=requests.get(url=new_job,headers=headers)
 		spones.encoding="gbk"

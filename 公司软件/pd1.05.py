@@ -10,7 +10,7 @@ import pymysql,tkinter.ttk#复选菜单模块,threading
 import openpyxl,datetime,re
 import win32api
 import win32print
-from c_excel_template import Excel_Template
+
 
 
 def mysql_jk_select(sql):#MySQL查询接口
