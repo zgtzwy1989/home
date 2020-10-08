@@ -1,10 +1,11 @@
-import qtpy.QtWidgets,sys,openpyxl
+import qtpy.QtWidgets,sys,openpyxl,re
 from qtpy.QtWidgets import QLineEdit,QWidget,QVBoxLayout,QLabel,QStyle,QMessageBox,QHBoxLayout,QLayout,QPushButton,QApplication
 class wig(QWidget):
     def __init__(self):
         super(wig, self).__init__()
         self.resize(300,300)
         self.YS()
+        self.excl()
 
         
     def YS(self):
@@ -29,21 +30,40 @@ class wig(QWidget):
         self.qh1.addLayout(self.qv3)
         self.setLayout(self.qh1)
         
-        self.butt1.clicked.connect(self.excl)
+        self.butt1.clicked.connect(self.read_qt)
+        self.butt2.clicked.connect(self.iter_qt)
 
 
     def excl(self):
-        wb=openpyxl.load_workbook("E:\实验.xlsx")
-        sheet = wb.sheetnames
-        look_sheet = wb[sheet[0]]
-        max_row=look_sheet.max_row
+        self.wb=openpyxl.load_workbook("E:\实验.xlsx")
+        self.sheet = self.wb.sheetnames
+        self.look_sheet = self.wb[self.sheet[0]]
+        self.max_row=self.look_sheet.max_row
+    def read_qt(self):
         name = self.edit1.text()
         print(name)
-        for i in look_sheet.iter_rows(min_row=2,max_row=max_row):
+        for i in self.look_sheet.iter_rows(min_row=2,max_row=self.max_row):
             if i[0].value==name:
                 print(i[0].value)
                 self.edit2.setText(f"{i[1].value}")
                 print(i[1].value)
+    def iter_qt(self):
+
+        qqq=self.edit2.text()
+        name = self.edit1.text()
+        print(type(qqq),name)
+        for i in self.look_sheet.iter_rows(min_row=2, max_row=self.max_row):
+            if i[0].value == name:
+                print(i[0].value)
+                sss=i[1]
+                print(sss)
+                num_row=re.search(r"<Cell 'Sheet1'.B(.*?)>",sss).group(1)
+                print(num_row)
+
+                # self.look_sheet[f"{mac}"]=qqq
+                # print("lalalaaaa")
+                # self.wb.save()
+                # print("w")
 if __name__ =="__main__":
     app=QApplication(sys.argv)#argv是一个列表，所以上面的参数按顺序
     demo=wig()
