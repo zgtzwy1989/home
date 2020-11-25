@@ -5,14 +5,14 @@ doc:替换问题本地址
 s、t、r、d:没有个每一个需要单元格数值
 
 '''
-ws=openpyxl.load_workbook(r"D:\已核销清单.xlsx")#excel路径
+ws=openpyxl.load_workbook(r"e:\9.xlsx")#excel路径
 sheet=ws.sheetnames
 look_sheet=ws[sheet[0]]
 '''遍历每行数据，提取单元格value'''
 row=look_sheet.max_row
 print()
 num=0
-for i in look_sheet.iter_rows(min_row=4,max_row=row-1,min_col=1,max_col=5):
+for i in look_sheet.iter_rows(min_row=3,max_row=row,min_col=1,max_col=6):
 
     KH=i[1].value
     NAME=i[2].value
@@ -22,14 +22,14 @@ for i in look_sheet.iter_rows(min_row=4,max_row=row-1,min_col=1,max_col=5):
     num=num+1
     yy=[NAME,KH,str(je),NAME,KH,str(je)]
     print(yy,num)
-    doc=docx.Document(r"D:\sbhtxx.docx")#替换文本地址
+    doc=docx.Document(r"e:\sbhtxx.docx")#替换文本地址
     count=0
     for p in doc.paragraphs:
         inline=p.runs
         for i in range(len(inline)):
-            if "XXXX" in inline [i].text:
-                text=inline[i].text.replace('XXXX',yy[count])
+            if "xxx" in inline [i].text:
+                text=inline[i].text.replace('xxx',yy[count])
                 inline[i].text = text
                 count+=1
 
-        doc.save(r"D:\lalala\{}_{}.docx".format(NAME,KH))
+        doc.save(r"e:\lalala\{}_{}.docx".format(NAME,KH))
