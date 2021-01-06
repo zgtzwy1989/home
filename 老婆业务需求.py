@@ -44,6 +44,7 @@ class Demo (QWidget):
         self.new_excel.clicked.connect(self.new1)#创建新的数据表
         self.new.clicked.connect(self.new2)#写入新的数据
         self.old_read.clicked.connect(self.new3)#读取数据
+        self.old_write.clicked.connect(self.new4)
     def new1(self):
         print("111")
         wb = openpyxl.Workbook(r"登记表.xlsx")
@@ -60,14 +61,44 @@ class Demo (QWidget):
         print(max_column)
         ws["A"+f"{num}"]=value
         wb.save(r'登记表.xlsx')
+    def nwe3_1(self):
+        num=int(self.i[0].value)+int(self.write_data_like.text())
+        ss=str(num)
+        self.result_new=(ss.rjust(10,'0'))
+        self.result_like.setText(self.result_new)
     def new3(self):
         wb = openpyxl.load_workbook(r'登记表.xlsx')
         ws = wb["登记本"]
         max_column = ws.max_row
-        for i in ws.iter_rows(min_row=max_column,min_col=0):
-            self.one_like.setText(i[0].value)
-            print(type(i[0].value))
-            print(int(i[0].value)+50)
+        for self.i in ws.iter_rows(min_row=max_column,min_col=0):
+            self.one_like.setText(self.i[0].value)
+        print(type(self.i[0].value))
+        self.write_data_like.textChanged[str].connect(self.nwe3_1)
+    def new4(self):#a份数，b是结果 c等于备注
+        wb = openpyxl.load_workbook(r'登记表.xlsx')
+        ws = wb["登记本"]
+        max_column = ws.max_row
+        a=self.write_data_like.text()
+        b=self.result_like.text()
+        c=self.result_bz_like.text()
+        print(type(a),type(b),c)
+        #ws["B"+f"{max_column}"]=a
+        ws["C"+f"{max_column}"]=b
+        #ws["D"+f"{max_column}"]=c
+        self.write_data_like.clear()
+        self.self.result_like.clear()
+        self.result_bz_like.clear()
+        wb.save(r'登记表.xlsx')
+        
+
+
+        
+
+        
+       
+
+            
+
 if __name__ == '__main__':
     app=QApplication(sys.argv)
     tt=Demo()
