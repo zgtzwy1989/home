@@ -65,12 +65,17 @@ class Demo (QWidget):
         value=value.rjust(9, '0')
         ws["A"+f"{num}"]=value
         wb.save(r'登记表.xlsx')
-        QMessageBox.information(self, "消息框标题", "创建完成。", QMessageBox.Yes | QMessageBox.No)
+        QMessageBox.information(self, "消息框标题", "创建完成。", QMessageBox.Yes )
     def nwe3_1(self):
-        num=int(self.i[0].value)+int(self.write_data_like.text())
-        ss=str(num)
-        self.result_new=(ss.rjust(9,'0'))
-        self.result_like.setText(self.result_new)
+        if len(self.write_data_like.text()) !=0:
+            num=int(self.i[0].value)+int(self.write_data_like.text())
+            ss=str(num)
+            self.result_new=(ss.rjust(9,'0'))
+            self.result_like.setText(self.result_new)
+
+        else:
+            self.result_like.clear()
+
     def new3(self):
         self.result_like.clear()
         self.result_bz_like.clear()
@@ -98,9 +103,10 @@ class Demo (QWidget):
         ws["a"+f"{max_column+1}"]=str(num)
         wb.save(r'登记表.xlsx')
         wb.save(r'd:/登记表.xlsx')
-        QMessageBox.information(self,"消息框标题","保存成功。",QMessageBox.Yes | QMessageBox.No)
+        QMessageBox.information(self,"消息框标题","保存成功。",QMessageBox.Yes )
         self.result_like.clear()
         self.result_bz_like.clear()
+        self.write_data_like.clear()
 if __name__ == '__main__':
     app=QApplication(sys.argv)
     tt=Demo()
