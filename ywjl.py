@@ -20,7 +20,7 @@ class Demo (QWidget):
         self.write_data_like = QLineEdit(self)
         self.result = QLabel("结果", self)
         self.result_like = QLineEdit(self)
-        self.result_bz = QLabel("备注", self)
+        self.result_bz = QLabel("领取人", self)
         self.result_bz_like = QLineEdit(self)
 
         # 列排序
@@ -51,7 +51,7 @@ class Demo (QWidget):
         print("111")
         wb = openpyxl.Workbook(r"登记表.xlsx")
         ws = wb.create_sheet(title="登记本", index=0)
-        text = ["开始号", "领取数值", "结束号", "备注"]
+        text = ["序号","时间","开始号", "领取数值", "结束号", "领取人","退回时间",'段号']
         ws.append(text)
         wb.save(r"登记表.xlsx")
         QMessageBox.information(self, "消息框标题", "创建初始数据完成。", QMessageBox.Yes | QMessageBox.No)
@@ -63,7 +63,7 @@ class Demo (QWidget):
         num=max_column+1
         print(max_column)
         value=value.rjust(9, '0')
-        ws["A"+f"{num}"]=value
+        ws["c"+f"{num}"]=value
         wb.save(r'登记表.xlsx')
         QMessageBox.information(self, "消息框标题", "创建完成。", QMessageBox.Yes )
     def nwe3_1(self):
@@ -82,11 +82,16 @@ class Demo (QWidget):
         wb = openpyxl.load_workbook(r'登记表.xlsx')
         ws = wb["登记本"]
         max_column = ws.max_row
-        for self.i in ws.iter_rows(min_row=max_column,min_col=0):
+        for self.i in ws.iter_rows(min_row=max_column,min_col=3):
             self.one_like.setText(self.i[0].value)
-        print(type(self.i[0].value))
+        print(self.i[0].value,max_column)
         self.write_data_like.textChanged[str].connect(self.nwe3_1)
-    def new4(self):#a份数，b是结果 c等于备注
+    def new4(self):
+        '''
+        a份数，b是结果 c领取人
+        "序号","时间","开始号", "领取数值", "结束号", "领取人","退回时间",'段号'
+        '''
+        #a份数，b是结果 c领取人
         wb = openpyxl.load_workbook(r'登记表.xlsx')
         ws = wb["登记本"]
         max_column = ws.max_row
@@ -94,13 +99,19 @@ class Demo (QWidget):
         b=self.result_like.text()
         c=self.result_bz_like.text()
         print(type(a),type(b),c)
-        ws["b"+f"{max_column}"]=str(a)
-        ws["c"+f"{max_column}"]=str(b)
-        ws["d"+f"{max_column}"]=str(c)
+        ws["d"+f"{max_column}"]=str(a)
+        ws["e"+f"{max_column}"]=str(b)
+        ws["f"+f"{max_column}"]=str(c)
         num=int(b)+1
         num=str(num).rjust(9,"0")
-        print(num)
-        ws["a"+f"{max_column+1}"]=str(num)
+        ws["c"+f"{max_column+1}"]=str(num)
+        #拼接短号
+        text_new=ws["c" + f"{max_column}"].value + "-" + ws["e"+f"{max_column}"].value
+        ws["h"+f'{max_column}']=str(text_new)
+        #序号
+        ws["a"+f'{max_column}']=int(max_column-1)
+        #时间
+        ws["b" + f'{max_column}']=str(datetime.date.today())
         wb.save(r'登记表.xlsx')
         wb.save(r'd:/登记表.xlsx')
         QMessageBox.information(self,"消息框标题","保存成功。",QMessageBox.Yes )
