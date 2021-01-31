@@ -65,16 +65,16 @@ class Demo (QWidget):
     def new1(self):
 
         ss=os.path.isfile(r'登记表.xlsx')
-        if ss=="true":
+        print(ss)
+        if ss==True:
             QMessageBox.information(self, "消息框标题", "已存在", QMessageBox.Yes)
-        else:
+        if ss==False:
             wb = openpyxl.Workbook(r"登记表.xlsx")
             ws = wb.create_sheet(title="登记本", index=0)
             text = ["序号", "时间", "开始号", "领取数值", "结束号", "领取人", "退回时间", '段号']
             ws.append(text)
             wb.save(r"登记表.xlsx")
             QMessageBox.information(self, "消息框标题", "创建初始数据完成。", QMessageBox.Yes)
-            QMessageBox.information(self, "消息框标题", "已存在", QMessageBox.Yes)
 
 
 
@@ -140,7 +140,7 @@ class Demo (QWidget):
         #时间
         ws["b" + f'{max_column}']=str(datetime.date.today())
         wb.save(r'登记表.xlsx')
-        wb.save(r'd:/登记表.xlsx')
+        wb.save(r'C:/登记表.xlsx')
         QMessageBox.information(self,"消息框标题","保存成功。",QMessageBox.Yes )
         self.result_like.clear()
         self.result_bz_like.clear()
@@ -156,7 +156,7 @@ class tool_new(QWidget):
         self.id_save=QPushButton("保存")
         #表格设置
         self.tableWidget = QTableWidget(self)
-        self.tableWidget.setRowCount(5)
+        #self.tableWidget.setRowCount(1)
         self.tableWidget.setColumnCount(4)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)#设置行
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.Interactive)#设置行
@@ -196,7 +196,7 @@ class tool_new(QWidget):
                 zo_iterms.append(iterms)
             else:
                 pass
-
+        self.tableWidget.setRowCount(len(zo_iterms))#根据数量创建表格
         for i in range(len(zo_iterms)):#所有插入信息
             for j in range(4):
                 print(i,j,str(zo_iterms[i][j]))
@@ -213,27 +213,14 @@ class tool_new(QWidget):
         for i in ws.iter_rows(min_col=8):
             max_row+=1
             if str(i[0].value)==self.tableWidget_str:
-
                 ws["g"+f'{max_row}']= str(datetime.date.today())
                 wb.save(r'登记表.xlsx')
+                wb.save(r'C:/登记表.xlsx')
                 self.tableWidget.clear()
                 self.id_edit.clear()
                 QMessageBox.information(self, "消息框标题", "保存成功。", QMessageBox.Yes)
-
-
-
             else:
                 pass
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     app=QApplication(sys.argv)
     tt=Demo()
