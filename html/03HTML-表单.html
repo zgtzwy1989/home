@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>表单</title>
+</head>
+<body>
+	<!--form标签来划定一个区域
+		action:数据的提交地址
+		method:提交方式 get post
+	-->
+
+	<form action="", method=""  >
+		<!--
+			type
+			表单必须要提交name属性-->
+		用户名：<input type="text" name="" value="" > <br>
+		密码：<input type="passwork" name="passwork" value="" ><br>
+		<!--单选框 type="radio" 必须有name属性，并且一组单选框属性必须相同-->
+		性别：<input type="radio" name="sex" value="1" >男 <input type="radio" name="sex" value="2" >女<br>
+		<!--多选框 type ="checkbox"必须指定name属性和value属性，并且name属性相同-->
+		爱好:	<input type="checkbox" name="love" value="1" >篮球<input type="checkbox" name="love" value="2" >足球<input type="checkbox" name="love" value="3" >羽毛球
+		<!--select 下拉选项必须必须配备option来使用-->
+		学历：	<select name="xl">
+					<option value="0">小学</option>
+					<option value="2">初学</option>
+					<option value="2">高中</option>
+		<!--文件上传上传 file 一般用来做文件上传-->
+		<br>
+		请选择文件上传:<input type="file" name="file">
+		<br>
+		请输入个人说明：<br>
+		<textarea name="text" id="">请输入个人信息</textarea>
+		<br>
+		<!--按钮  type -->
+		<input type="submit" value ="确定"><br>
+		<button>提交</button>
+		<!--重置-->
+		<input type="reset" >
+
+
+
+	</form>
+	
+</body>
+</html>
