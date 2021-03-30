@@ -56,7 +56,7 @@ class Demo (QWidget):
         self.qr_button.clicked.connect(self.inster)
         self.qc_button.clicked.connect(self.clear)
     def i(self,sql):
-        ws = pymysql.connect(host="localhost", passwd="cq123456", user="root", port=3306, db="业务")
+        ws = pymysql.connect(host="localhost", passwd="cq123456", user="root", port=3306, db="2021year")
         wb = ws.cursor()
         wb.execute(sql)
         ws.commit()
@@ -71,21 +71,21 @@ class Demo (QWidget):
         nr=self.ql_content_edit.text()
         if self.ql_yxx_yes_edit.isChecked() == True:
             yxx = "有效"
-            sql = f"insert into 电话联系表(`税号`,联系人,`电话`,content,有效性)value('{sh}','{zw}','{phone}','{nr}','{yxx}')"
+            sql = f"insert into 2021_phone(`税号`,联系人,`电话`,content,有效性)value('{sh}','{zw}','{phone}','{nr}','{yxx}')"
+            print(sql)
         if self.ql_yxx_no_edit.isChecked() == True:
             yxx = "无效"
-            sql = f"insert into 电话联系表(`税号`,联系人,`电话`,content,有效性)value('{sh}','{zw}','{phone}','{nr}','{yxx}')"
-        
-
-        
-            
-           
+            sql = f"insert into 2021_phone(`税号`,联系人,`电话`,content,有效性)value('{sh}','{zw}','{phone}','{nr}','{yxx}')"
+            print(sql)
         self.i(sql)
 
         QMessageBox.information(self, "消息框标题", "保存成功。", QMessageBox.Yes)
         self.ql_yxx_yes_edit.setChecked(True)
         self.ql_phone_edit.clear()
         self.ql_content_edit.clear()
+        self.ql_zw_edit.setCurrentIndex(0)
+
+
        
     def clear(self):
         self.ql_sh_edit.clear()

@@ -1,4 +1,4 @@
-import qtpy.QtWidgets,sys,openpyxl,re
+import sys,openpyxl
 from qtpy.QtWidgets import QLineEdit,QWidget,QVBoxLayout,QLabel,QStyle,QMessageBox,QHBoxLayout,QLayout,QPushButton,QApplication,QRadioButton
 class wig(QWidget):
     def __init__(self):
@@ -109,7 +109,7 @@ class wig(QWidget):
             self.edit_ramark.setEnabled(False)
             self.edit_datetime.setEnabled(False)
     def excl(self):
-        self.wb=openpyxl.load_workbook(r"e:\电话组催费数据-泰兴分.xlsx")
+        self.wb=openpyxl.load_workbook(r"d:\电话组催费数据-泰兴分.xlsx")
         self.sheet = self.wb.sheetnames
         self.look_sheet = self.wb[self.sheet[0]]
         self.max_row = self.look_sheet.max_row
